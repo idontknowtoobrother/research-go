@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"runtime"
 	"sync"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -64,6 +66,10 @@ func main() {
 		}
 	}()
 
+	var m1, m2 runtime.MemStats
+	runtime.GC()
+	runtime.ReadMemStats(&m1)
+
 	bookingCollection = DBClient.Database("historic").Collection("booking")
 	ocppCollection = DBClient.Database("historic").Collection("ocpp")
 
@@ -86,4 +92,8 @@ func main() {
 
 	close(jobQueue)
 	wg.Wait()
+
+	runtime.ReadMemStats(&m2)
+	fmt.Println("total:", m2.TotalAlloc-m1.TotalAlloc)
+	fmt.Println("mallocs:", m2.Mallocs-m1.Mallocs)
 }
