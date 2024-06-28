@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+
+	"github.com/backend/middleware/handlers"
+)
 
 func main() {
-	fmt.Println("Test 3")
+	http.Handle("/first", handlers.First{})
+	http.Handle("/second", handlers.Second{})
+
+	http.ListenAndServe(":8080", nil)
 }

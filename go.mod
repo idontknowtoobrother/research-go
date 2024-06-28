@@ -1,3 +1,3 @@
-module github.com/research-mongo/collection
+module github.com/backend/middleware
 
 go 1.22.1
