@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -41,6 +44,23 @@ func main() {
 	c := pb.NewOrderServiceClient(conn)
 
 	mux := http.NewServeMux()
+
+	// START Graceful shutdown (need to learn more about this)
+	srv := &http.Server{
+		Addr:    httpAddr,
+		Handler: mux,
+	}
+	term := make(chan os.Signal, 1)
+	signal.Notify(term, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-term
+		logger.Info("gracefully shutting down server...")
+		if err := srv.Close(); !errors.Is(err, http.ErrServerClosed) {
+			logger.Fatal("failed to shutdown server", "error", err)
+		}
+	}()
+	// END Graceful shutdown
+
 	handler := NewHandler(c)
 	handler.registerRoutes(mux)
 	logger.Info("starting server", "port", httpAddr)

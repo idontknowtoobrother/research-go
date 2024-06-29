@@ -4,6 +4,8 @@ import (
 	"context"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	log "github.com/charmbracelet/log"
@@ -31,6 +33,19 @@ func main() {
 		logger.Fatal("failed to connect to gRPC server", "error", err)
 	}
 	defer l.Close()
+	defer grpcServer.Stop()
+
+	// START Graceful shutdown (need to learn more about this)
+	term := make(chan os.Signal, 1)
+	signal.Notify(term, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-term
+		logger.Info("gracefully shutting down server...")
+		if err := l.Close(); err != nil {
+			logger.Fatal("failed to shutdown server", "error", err)
+		}
+	}()
+	// END Graceful shutdown
 
 	store := NewStore()
 	svc := NewService(store)
