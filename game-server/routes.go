@@ -135,7 +135,6 @@ func InitRoutes(fiberApp *fiber.App, playerStore *stores.PlayerStore, playerServ
 				"message": err.Error(),
 			})
 		}
-
 		return fctx.JSON(fiber.Map{
 			"message": fmt.Sprintf("Player uuid=%s deleted successfully", uuid),
 		})
