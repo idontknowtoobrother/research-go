@@ -33,7 +33,7 @@ func connectWorld(fctx *fiber.Ctx) error {
 
 	claims := jwt.MapClaims{
 		"iss":   "game-server",
-		"group": "admin",
+		"group": "user",
 		"exp":   time.Now().Add(time.Hour * 72).Unix(),
 	}
 
@@ -68,6 +68,7 @@ func InitRoutes(fiberApp *fiber.App, playerStore *stores.PlayerStore, playerServ
 	}
 
 	playerGroup := fiberApp.Group("/players")
+	playerGroup.Use(middlewares.Log)
 	playerGroup.Use(jwtware.New(jwtConfig))
 
 	// Routes (Protected)

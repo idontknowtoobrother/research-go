@@ -7,7 +7,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/idontknowtoobrother/monolith-api-crud-common/utils"
-	"github.com/idontknowtoobrother/monolith-api-crud/middlewares"
 	"github.com/idontknowtoobrother/monolith-api-crud/services"
 	"github.com/idontknowtoobrother/monolith-api-crud/stores"
 
@@ -46,7 +45,7 @@ func main() {
 		},
 	}))
 
-	app.Use(middlewares.Log)
+	// app.Use(middlewares.Log)
 
 	// Routes
 	InitRoutes(app, playerStore, playerService)
