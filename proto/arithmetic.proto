@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package arithmetic;
+
+option go_package = "../arithmetic";
+
+
+service Arithmetic {
+    rpc Add(ArithmeticRequest) returns (ArithmeticResponse);
+    rpc Subtract(ArithmeticRequest) returns (ArithmeticResponse);
+    rpc Multiply(ArithmeticRequest) returns (ArithmeticResponse);
+    rpc Devide(ArithmeticRequest) returns  (ArithmeticResponse);
+
+}
+
+message ArithmeticRequest {
+    float num1 = 1;
+    float num2 = 2;
+}
+
+message ArithmeticResponse {
+    float result = 1;
+}

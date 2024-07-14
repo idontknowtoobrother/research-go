@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "../user";
+
+service UserManager {
+    rpc CreateUser(UserCreateModelRequest) returns (UserModelResponse);
+    rpc ReadUser(ReadUserRequest) returns (UserModelResponse);
+    rpc UpdateUser(UserUpdateModelRequest) returns (UserModelResponse);
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserRequest);
+}
+
+message User {
+    string uuid = 1;
+    string identifier = 2;
+    string secret = 3;
+    string name = 4;
+}
+
+message UserModelResponse {
+    string identifier = 1;
+    string name = 2;
+}
+
+message UserCreateModelRequest {
+    string identifier = 1;
+    string secret = 2;
+    string name = 3;
+}
+
+message ReadUserRequest {
+    string uuid = 1;
+}
+
+message UserUpdateModelRequest {
+    string uuid = 1;
+    string identifier = 2;
+    string secret = 3;
+    string name = 4;
+}
+
+message DeleteUserRequest {
+    string uuid = 1;
+}
