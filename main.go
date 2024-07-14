@@ -16,7 +16,3 @@ func main() {
 	fmt.Println(<-ch)
 	fmt.Println(<-ch)
 }
-
-// singnal -> ch (1)
-// singnal -> ch (1, 2)
-// singnal -> ch (2)
